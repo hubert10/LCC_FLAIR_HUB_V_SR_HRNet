@@ -559,3 +559,8 @@ if __name__ == "__main__":
 
 # sudo sshfs eouser@74.63.7.39:/hubert_storage/  -o _netdev,user,idmap=user,allow_other,default_permissions,uid=1000,gid=1000,IdentityFile=/home/eouser/.ssh/flair,umask=000
 # sudo sshfs -o IdentityFile=/home/eouser/.ssh/flair.pem eouser@74.63.7.39:/hubert_storage /hubert_storage
+
+
+
+
+# scp -r /bigwork/nhgnkany/Results/LCC_FLAIR_2_SRDiff_DDIM_BASE/checkpoints/srdiff_maxvit_ltae_ckpt/results_0_/  nhgnkany@transfer.cluster.uni-hannover.de:D:\kanyamahanga\Results\FLAIR_2\Exp_2\LCC_FLAIR_2_SRDiff_DDIM_BASE\
