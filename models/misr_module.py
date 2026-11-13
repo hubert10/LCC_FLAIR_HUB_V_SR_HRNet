@@ -653,12 +653,12 @@ class HighResLtaeNet(nn.Module):
         out = self.decoder(fea)
         # torch.Size([4, 12, 3, 160, 160]) --> torch.Size([4, 12, 3, 40, 40])
         
-        print("pred_img decoder:", out.shape)
+        # print("pred_img decoder:", out.shape)
 
         # cropping_ratio = int(out.shape[-1] / 4)
         # transform = T.CenterCrop((cropping_ratio, cropping_ratio))
         # out = transform(out)
-        print("pred_img transform:", out.shape)
+        # print("pred_img transform:", out.shape)
 
         # Resizing the spatial dimensions (H, W)
         x_inter = F.interpolate(
@@ -669,7 +669,7 @@ class HighResLtaeNet(nn.Module):
         )
         # Reshape back to (B, _T, C, new_H, new_W)
         out = x_inter.view(B, _T, C, x_inter.shape[-2], x_inter.shape[-1])
-        print("pred_img out:", out.shape)
+        # print("pred_img out:", out.shape)
 
         if get_fea:
             return out, fea

@@ -30,7 +30,7 @@ modalities:
         filter_sentinel2_max_cloud : 1 # [0-100]
         filter_sentinel2_max_snow : 1 # [0-100]
         filter_sentinel2_max_frac_cover : 0.05 # [0-1]
-        temporal_average_sentinel2 : nbts  # [False / monthly / semi-monthly / nbts]
+        temporal_average_sentinel2: nbts  # [False / monthly / semi-monthly / nbts]
         temporal_diff: custom # [default / custom ] # custom: reference date is the SPOT image aquisition
         calc_elevation : True
         calc_elevation_stack_dsm : True 

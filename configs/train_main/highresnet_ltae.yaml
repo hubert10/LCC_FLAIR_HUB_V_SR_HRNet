@@ -1,7 +1,6 @@
 base_config:
   - ./sr_base.yaml
   - ./config_base.yaml
-  - ./df2k4x.yaml
 trainer_cls: tasks.highresnet_ltae.HighResNetLTAETrainer
 # model
 hidden_size: 64

@@ -26,7 +26,7 @@ inputs:
     num_channels_aer: 5 
     num_channels_sat: 4 
     lr_patch_size: 10
-    sr_patch_size: 64
+    sr_img_lr_size: 64
     ref_date: '05-15'
     nbts: 3 # 1: 12 images, 2: 6 images, 3: 4 images, 4: 3 images, 6: 2 images
     sr_scale: 6.25 # 6.25 for 20 cm GSD to 1.6 m GSD, 10 for 20 cm GSD to 2 m GSD

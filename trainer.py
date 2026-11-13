@@ -281,24 +281,6 @@ class Trainer:
                         hparams["num_ckpt_keep"],
                     )
 
-                # if training_step % hparams["save_ckpt_interval"] == 0:
-                #     val_miou = None
-                #     if (
-                #         val_list
-                #         and isinstance(val_list[-1], dict)
-                #         and "val/miou" in val_list[-1]
-                #     ):
-                #         val_miou = round(val_list[-1]["val/miou"], 2)
-
-                #     save_checkpoint(
-                #         model,
-                #         optimizer,
-                #         self.work_dir,
-                #         training_step,
-                #         hparams["num_ckpt_keep"],
-                #         val_miou=val_miou,
-                #     )
-
                 model.train()
                 batch = move_to_cuda(batch)
                 losses, total_loss = self.training_step(batch)

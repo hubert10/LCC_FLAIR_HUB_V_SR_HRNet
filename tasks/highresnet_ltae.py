@@ -49,6 +49,7 @@ class HighResNetLTAETrainer(Trainer):
             )
 
         self.model = SITSAerialSegmenter(sr_model=self.sr_model, config=hparams)
+        
         if hparams["infer"]:
             if hparams["sr_net_ckpt"] != "" and os.path.exists(hparams["sr_net_ckpt"]):
                 load_ckpt(self.model, hparams["sr_net_ckpt"])

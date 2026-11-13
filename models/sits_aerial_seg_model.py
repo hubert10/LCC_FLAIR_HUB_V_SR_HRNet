@@ -17,18 +17,14 @@ class SITSAerialSegmenter(nn.Module):
         super().__init__()
         self.sr_model = sr_model
         self.config = config
-        self.backbone_dims = [
-            config["models"]["t_convformer"]["embed_dim"] * 2**i
-            for i in range(len(config["models"]["t_convformer"]["depths"]))
-        ]
 
         # =========================
         # 1. SR-SITS Encoder
         # =========================
         self.sr_sits_enc = TConvFormer(
             input_size=(
-                hparams["inputs"]["sr_patch_size"],
-                hparams["inputs"]["sr_patch_size"],
+                hparams["inputs"]["sr_img_lr_size"],
+                hparams["inputs"]["sr_img_lr_size"],
             ),
             stem_channels=64,
             block_channels=hparams["models"]["t_convformer"][
@@ -41,6 +37,24 @@ class SITSAerialSegmenter(nn.Module):
             stochastic_depth_prob=0.2,
             partition_size=hparams["models"]["maxvit"]["window_cond_size"],
         )
+
+
+        if (
+            hparams["cond_net_ckpt"] != ""
+            and os.path.exists(hparams["cond_net_ckpt"])
+            and not hparams["infer"]
+        ):
+            weights_path = hparams["cond_net_ckpt"]
+            if torch.cuda.is_available():
+                old_dict = torch.load(weights_path, weights_only=False)
+            else:
+                old_dict = torch.load(weights_path, map_location=torch.device("cpu"))
+            model_dict = self.sr_sits_enc.state_dict()
+            old_dict = {k: v for k, v in old_dict.items() if (k in model_dict)}
+            model_dict.update(old_dict)
+            print(f"| load 'cond model' from '{weights_path}'.")
+            self.sr_sits_enc.load_state_dict(model_dict)
+
 
         # =========================
         # 2. Aerial Encoder (MaxViT)
@@ -78,6 +92,7 @@ class SITSAerialSegmenter(nn.Module):
             config["inputs"]["num_classes"],
         )
 
+
         # 4. Aerial Decoder from U-Net Former paper
         self.aer_net_dec = UNetAerDecoder(
             encoder_channels,
@@ -86,6 +101,12 @@ class SITSAerialSegmenter(nn.Module):
             config["models"]["maxvit"]["window_size"],
             config["inputs"]["num_classes"],
         )
+
+
+        # print(f"Trainable parameters: ++++++++++++++++++++++++++++++++++++++")
+
+        # print(sum(p.numel() for p in self.aer_net_dec.parameters() if p.requires_grad))
+
 
         self.fusion_module = FFCA(
             aer_channels_list=config["models"]["t_convformer"]["aer_channels_list"],
@@ -216,6 +237,8 @@ class SITSAerialSegmenter(nn.Module):
         h_sr, w_sr = img_sr.size()[-2:]
 
         # SR-SITS branch
+        # print("img_sr :", img_sr.shape)
+        # print("aerial :", aerial.shape)
 
         ## Encoder
         red_temp_feats, _ = self.sr_sits_enc(img_sr, dates)

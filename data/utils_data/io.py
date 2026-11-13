@@ -2,12 +2,11 @@ import os
 import rasterio
 import numpy as np
 
-# try:
-#     DATA_DIR = "/hubert_storage"
-# except Exception:
-#     DATA_DIR = "D:\kanyamahanga\Datasets"
+try:
+    DATA_DIR = "/hubert_storage"
+except Exception:
+    DATA_DIR = "D:\kanyamahanga\Datasets"
 
-DATA_DIR = "D:\kanyamahanga\Datasets"
 
 
 def read_patch(raster_file: str, channels: list = None) -> np.ndarray:

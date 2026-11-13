@@ -550,7 +550,7 @@ class UNetAerDecoder(nn.Module):
         decoder_channels=64,
         dropout=0.1,
         window_size=8,
-        num_classes=13,
+        num_classes=15,
     ):
         super(UNetAerDecoder, self).__init__()
 
